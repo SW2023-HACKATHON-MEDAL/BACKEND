@@ -14,5 +14,5 @@ import java.util.List;
 public class MainDto {
     private List<PillDto> morningPills;
     private List<PillDto> dinnerPills;
-    private List<PillDto> eveningPills;
+    private List<PillDto> launchPills;
 }

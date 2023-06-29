@@ -5,6 +5,7 @@ import medal.backend.Dto.JoinFormDto;
 import medal.backend.Dto.LoginFormDto;
 import medal.backend.Dto.MainDto;
 import medal.backend.Dto.PillDto;
+import medal.backend.entity.Member;
 import medal.backend.service.MemberService;
 import medal.backend.service.PillService;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -53,15 +55,19 @@ public class ApiController {
      * 로그인
      */
     @PostMapping("/login")
-    public ResponseEntity<?> loginMember(LoginFormDto loginFormDto) {
-        JoinFormDto joinFormDto = memberService.loginMember(loginFormDto);
-        if(joinFormDto == null) ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(joinFormDto);
+    public ResponseEntity<?> loginMember(LoginFormDto loginFormDto, HttpSession session) {
+        Member member = memberService.loginMember(loginFormDto);
+        if(member == null) ResponseEntity.badRequest().build();
+
+        //로그인 됐다면 세션에 저장
+        session.setAttribute("loginMember", member.getId());
+        return ResponseEntity.ok(true);
     }
 
-    @GetMapping("/mainPage/{memberId}")
-    public MainDto mainPage(@PathVariable("memberId") Long memberId) {
-        MainDto mainDto = pillService.findPills(memberId);
+    @GetMapping("/mainPage")
+    public MainDto mainPage(HttpSession session) {
+        MainDto mainDto = pillService.findPills((Long) session.getAttribute("loginMember"));
+
     }
 
 }

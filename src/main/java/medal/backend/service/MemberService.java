@@ -31,16 +31,13 @@ public class MemberService {
     /**
      * 로그인 처리
      */
-    public JoinFormDto loginMember(LoginFormDto loginFormDto) {
+    public Member loginMember(LoginFormDto loginFormDto) {
         Member member = memberRepository.findByLoginId(loginFormDto.getLoginId());
         if(member == null) {
             log.info("없는 아이디입니다.");
         }
         if(loginFormDto.getPassword().equals(loginFormDto.getPassword())) {
-            return JoinFormDto.builder()
-                    .id(member.getId())
-                    .role(member.getRole())
-                    .build();
+            return member;
         }
         return null;
     }
