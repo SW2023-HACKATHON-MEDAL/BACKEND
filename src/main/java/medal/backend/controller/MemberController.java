@@ -40,7 +40,7 @@ public class MemberController {
      */
     @ApiOperation(value = "회원가입")
     @PostMapping("/join")
-    public ResponseEntity<?> saveMember(JoinFormDto joinFormDto) {
+    public ResponseEntity<?> saveMember(@RequestBody JoinFormDto joinFormDto) {
         Long memberId = memberService.saveMember(joinFormDto);
         return ResponseEntity.ok(true);
     }

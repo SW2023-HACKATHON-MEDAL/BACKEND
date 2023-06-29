@@ -16,6 +16,6 @@ public class ExceptionController {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> ExceptionHandler(Exception e) {
-        return ResponseEntity.badRequest().body("에러가 발생했습니다.");
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }
