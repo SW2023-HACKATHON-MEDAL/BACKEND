@@ -98,6 +98,7 @@ public class MemberService {
             Boolean check = true;
             for(Enroll enroll : enrollList) {
                 if (enroll.getAlarm().getLaunchAte() == false) {
+                    check = false;
                     manageInfoDto.setIsAteLaunch(false);
                 }
             }
@@ -108,6 +109,7 @@ public class MemberService {
             Boolean check = true;
             for(Enroll enroll : enrollList) {
                 if (enroll.getAlarm().getDinnerAte() == false) {
+                    check = false;
                     manageInfoDto.setIsAteDinner(false);
                 }
             }
