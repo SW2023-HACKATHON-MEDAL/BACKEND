@@ -14,4 +14,5 @@ public class AlarmFromDto {
     private Boolean morning;
     private Boolean dinner;
     private Boolean launch;
+    private Integer takeTime; //투악 횟수
 }

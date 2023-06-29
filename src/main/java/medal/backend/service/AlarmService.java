@@ -34,10 +34,16 @@ public class AlarmService {
 
         Pill pill = pillRepository.findByName(alarmFromDto.getPillName());
 
+        double takeTimeInDay  = 0;
+        if(alarmFromDto.getMorning() == true) takeTimeInDay++;
+        if(alarmFromDto.getLaunch() == true) takeTimeInDay++;
+        if(alarmFromDto.getDinner() == true) takeTimeInDay++;
+
         Alarm alarm = Alarm.builder()
                 .morning(alarmFromDto.getMorning())
                 .launch(alarmFromDto.getLaunch())
                 .dinner(alarmFromDto.getDinner())
+                .remainingDay((int) Math.ceil(alarmFromDto.getTakeTime() / takeTimeInDay))
                 .member(member)
                 .build();
 

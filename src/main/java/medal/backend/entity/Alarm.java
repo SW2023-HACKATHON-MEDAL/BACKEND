@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -29,10 +30,9 @@ public class Alarm {
     private Boolean dinnerAte = false;
     @Builder.Default
     private Boolean launchAte = false;
+    private Integer remainingDay; //남은 복용 기간
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
-
 }

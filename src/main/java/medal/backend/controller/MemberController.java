@@ -3,6 +3,7 @@ package medal.backend.controller;
 import lombok.RequiredArgsConstructor;
 import medal.backend.Dto.JoinFormDto;
 import medal.backend.Dto.LoginFormDto;
+import medal.backend.Dto.ManageInfoDto;
 import medal.backend.Dto.PillDto;
 import medal.backend.entity.Member;
 import medal.backend.service.AlarmService;
@@ -49,12 +50,16 @@ public class MemberController {
 
         //로그인 됐다면 세션에 저장
         session.setAttribute("loginMember", member.getId());
-        return ResponseEntity.ok(true);
+        return ResponseEntity.ok(member.getRole());
     }
 
+    /**
+     * 관리하는 회원의 약 복용 상태
+     */
     @GetMapping("/manage-info")
-    public ResponseEntity<?> manageInfo(HttpSession session) {
+    public ManageInfoDto manageInfo(HttpSession session) {
         Long memberId = (Long) session.getAttribute("loginMember");
-        memberService.findManagedMemberInfo(memberId)
+        ManageInfoDto manageInfoDto = memberService.findManagedMemberInfo(memberId);
+        return manageInfoDto;
     }
 }

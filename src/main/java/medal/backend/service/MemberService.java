@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import medal.backend.Dto.JoinFormDto;
 import medal.backend.Dto.LoginFormDto;
+import medal.backend.Dto.ManageInfoDto;
+import medal.backend.entity.Alarm;
 import medal.backend.entity.Enroll;
 import medal.backend.entity.Member;
 import medal.backend.repository.EnrollRepository;
@@ -32,6 +34,7 @@ public class MemberService {
                 .password(joinFormDto.getPassword())
                 .userName(joinFormDto.getUserName())
                 .phoneNumber(joinFormDto.getUserName())
+                .role(joinFormDto.getRole())
                 .build();
         
         Member managedMember = null;
@@ -61,7 +64,7 @@ public class MemberService {
     }
 
 
-    public void findManagedMemberInfo(Long memberId) {
+    public ManageInfoDto findManagedMemberInfo(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -70,24 +73,36 @@ public class MemberService {
                 .orElseThrow(EntityNotFoundException::new);
 
         LocalTime currentTime = LocalTime.now();
+        System.out.println("현재시각: " + currentTime);
 
-        List<Enroll> morningEnrolls = new ArrayList<>();
-        List<Enroll> launchEnrolls = new ArrayList<>();
-        List<Enroll> dinnerEnrolls = new ArrayList<>();
+        List<Enroll> enrollList = enrollRepository.findByMemberId(managedMember.getId());
 
-        if (currentTime.isAfter(LocalTime.of(10, 0)) && currentTime.isBefore(LocalTime.of(14, 0))) {
-            morningEnrolls = enrollRepository.findMorningEnrolls(memberId);
-        } else if (currentTime.isAfter(LocalTime.of(14, 0)) && currentTime.isBefore(LocalTime.of(21, 0))) {
-            launchEnrolls = enrollRepository.findLaunchEnrolls(memberId);
+
+        ManageInfoDto manageInfoDto = new ManageInfoDto();
+
+        if (currentTime.isAfter(LocalTime.of(10, 0))) {
+            log.info("아침 지남");
+            for(Enroll enroll : enrollList) {
+                if (enroll.getAlarm().getMorningAte() == false) {
+                    manageInfoDto.setIsAteMorning(false);
+                }
+            }
+        } else if (currentTime.isAfter(LocalTime.of(14, 0))) {
+            log.info("점심 지남");
+            for(Enroll enroll : enrollList) {
+                if (enroll.getAlarm().getLaunchAte() == false) {
+                    manageInfoDto.setIsAteLaunch(false);
+                }
+            }
         } else if (currentTime.isAfter(LocalTime.of(21, 0))) {
-            dinnerEnrolls = enrollRepository.findDinnerEnrolls(memberId);
+            log.info("저녁 지남");
+            for(Enroll enroll : enrollList) {
+                if (enroll.getAlarm().getDinnerAte() == false) {
+                    manageInfoDto.setIsAteDinner(false);
+                }
+            }
         }
-        for(Enroll enroll : morningEnrolls) {
-            enroll
-        }
 
-
-        List<Enroll> dinnerEnrolls = enrollRepository.findDinnerEnrolls(memberId);
-
+        return manageInfoDto;
     }
 }
