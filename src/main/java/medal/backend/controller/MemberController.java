@@ -65,7 +65,8 @@ public class MemberController {
     @ApiOperation(value = "관리 회원의 약 복용 상태")
     @GetMapping("/manage-info")
     public ManageInfoDto manageInfo(HttpSession session) {
-        Long memberId = (Long) session.getAttribute("loginMember");
+//        Long memberId = (Long) session.getAttribute("loginMember");
+        Long memberId = 2L;
         ManageInfoDto manageInfoDto = memberService.findManagedMemberInfo(memberId);
         return manageInfoDto;
     }
