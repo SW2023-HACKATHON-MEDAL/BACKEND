@@ -1,21 +1,17 @@
 package medal.backend.controller;
 
 import lombok.AllArgsConstructor;
-import medal.backend.Dto.JoinFormDto;
-import medal.backend.Dto.LoginFormDto;
-import medal.backend.Dto.MainDto;
-import medal.backend.Dto.PillDto;
+import medal.backend.Dto.*;
+import medal.backend.entity.Alarm;
 import medal.backend.entity.Member;
 import medal.backend.service.MemberService;
 import medal.backend.service.PillService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -36,11 +32,7 @@ public class ApiController {
     /**
      * 약 정보 조회 //회원 아이디로 가져오는걸로 바꾸기
      */
-    @GetMapping("/find/{id}")
-    public PillDto findPill(@PathVariable("id") Long id) {
-        PillDto pillDto = pillService.findPillById(id);
-        return pillDto;
-    }
+
 
     /**
      * 회원가입
@@ -64,10 +56,18 @@ public class ApiController {
         return ResponseEntity.ok(true);
     }
 
-    @GetMapping("/mainPage")
-    public MainDto mainPage(HttpSession session) {
-        MainDto mainDto = pillService.findPills((Long) session.getAttribute("loginMember"));
+    @PostMapping("/enroll-alarm")
+    public ResponseEntity<?> enrollAlarm(AlarmFromDto alarmFromDto, HttpSession session) {
+        Long memberId = (Long) session.getAttribute("loginMember");
 
+    }
+
+    /**
+     * 아침, 점심, 저녁 별 알약 정보
+     */
+    @GetMapping("/mainPage")
+    public AlarmDto mainPage(HttpSession session) {
+        return null;
     }
 
 }

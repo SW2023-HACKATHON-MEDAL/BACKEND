@@ -10,12 +10,14 @@ import java.util.List;
 
 @Repository
 public interface PillRepository extends JpaRepository<Pill, Long> {
-    @Query("select P from Pill p where p.member.id=:memberId and p.morning is true")
+    @Query("select p from Pill p where p.member.id=:memberId and p.morning is true")
     List<Pill> findMorningPills(@Param("memberId") Long memberId);
 
-    @Query("select P from Pill p where p.member.id=:memberId and p.dinner is true")
+    @Query("select p from Pill p where p.member.id=:memberId and p.dinner is true")
     List<Pill> findDinnerPills(@Param("memberId") Long memberId);
 
-    @Query("select P from Pill p where p.member.id=:memberId and p.launch is true")
+    @Query("select p from Pill p where p.member.id=:memberId and p.launch is true")
     List<Pill> findLaunchPills(@Param("memberId") Long memberId);
+
+    Pill findByName(String pillName);
 }

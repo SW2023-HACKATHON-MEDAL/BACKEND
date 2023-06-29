@@ -5,14 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MainDto {
-    private List<PillDto> morningPills;
-    private List<PillDto> dinnerPills;
-    private List<PillDto> launchPills;
+public class AlarmFromDto {
+    private String pillName;
+    private Boolean morning;
+    private Boolean dinner;
+    private Boolean launch;
 }

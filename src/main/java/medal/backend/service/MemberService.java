@@ -39,6 +39,7 @@ public class MemberService {
         if(loginFormDto.getPassword().equals(loginFormDto.getPassword())) {
             return member;
         }
+        log.info("비밀번호가 틀립니다.");
         return null;
     }
 
