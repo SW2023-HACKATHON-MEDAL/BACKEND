@@ -1,6 +1,7 @@
 package medal.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import medal.backend.Dto.AlarmFromDto;
 import medal.backend.Dto.PillDto;
 import medal.backend.entity.Alarm;
@@ -12,6 +13,7 @@ import medal.backend.repository.EnrollRepository;
 import medal.backend.repository.MemberRepository;
 import medal.backend.repository.PillRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@Transactional
 public class AlarmService {
     private final AlarmRepository alarmRepository;
     private final EnrollRepository enrollRepository;
@@ -65,9 +69,11 @@ public class AlarmService {
         if(when == 0) {
             enrollList = enrollRepository.findMorningEnrolls(memberId);
         }
+        //점심
         else if(when == 1) {
             enrollList = enrollRepository.findLaunchEnrolls(memberId);
         }
+        //저녁
         else if(when == 2) {
             enrollList = enrollRepository.findDinnerEnrolls(memberId);
         }
@@ -82,10 +88,32 @@ public class AlarmService {
                     .shape(pill.getShape())
                     .texture(pill.getTexture())
                     .storeImgName(pill.getStoreImgName())
+                    .alarmId(enroll.getAlarm().getId())
                     .build();
             pillDtoList.add(pillDto);
         }
         return pillDtoList;
     }
 
+    public void takePill(int when, List<PillDto> pillDtoList) {
+        List<Long> keysToChange = new ArrayList<>();
+        for(PillDto pillDto : pillDtoList) {
+            keysToChange.add(pillDto.getAlarmId());
+        }
+
+        //아침
+        if(when == 0) {
+            alarmRepository.updateMorningAte(keysToChange);
+        }
+        //점심
+        else if(when == 1) {
+            alarmRepository.updateLaunchAte(keysToChange);
+        }
+        //저녁
+        else if(when == 2) {
+            alarmRepository.updateDinnerAte(keysToChange);
+        }
+
+
+    }
 }

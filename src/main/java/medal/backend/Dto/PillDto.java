@@ -8,7 +8,6 @@ import medal.backend.entity.Pill;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class PillDto {
     private Long pillId;
@@ -17,14 +16,15 @@ public class PillDto {
     private String shape; // 모양
     private String texture; // 제형
     private String storeImgName; //사진 (로컬에 저장된 이름)
+    private Long alarmId; //먹고 체크할 때 사용
 
-
-    public PillDto(Pill pill) {
-        this.pillId = pill.getId();
-        this.name = pill.getName();
-        this.color = pill.getColor();
-        this.shape = pill.getShape();
-        this.texture = pill.getTexture();
-        this.storeImgName = pill.getStoreImgName();
+    public PillDto(Long pillId, String name, String color, String shape, String texture, String storeImgName, Long alarmId) {
+        this.pillId = pillId;
+        this.name = name;
+        this.color = color;
+        this.shape = shape;
+        this.texture = texture;
+        this.storeImgName = storeImgName;
+        this.alarmId = alarmId;
     }
 }

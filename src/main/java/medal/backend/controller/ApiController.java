@@ -1,5 +1,6 @@
 package medal.backend.controller;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import medal.backend.Dto.*;
 import medal.backend.entity.Member;
@@ -39,13 +40,22 @@ public class ApiController {
      * 1: 점심
      * 2: 저녁
      */
-    @GetMapping("/info-page")
+    @ApiOperation(value = "아침, 점심, 저녁 별 알약 정보", notes = "아침: type=0 <br> 점심: type=1 <br> 저녁: type=2")
+    @GetMapping("/info-alarm")
     public List<PillDto> mainPage(@RequestParam("type") int when, HttpSession session) {
         Long memberId = (Long) session.getAttribute("loginMember");
         List<PillDto> pillDtoList = alarmService.findPills(when, memberId);
         return pillDtoList;
     }
 
+    @ApiOperation(value = "약 먹었는지 체크 요청", notes = "아침: type=0 <br> 점심: type=1 <br> 저녁: type=2")
+    @PostMapping("/take-pill")
+    public ResponseEntity<?> takePill(@RequestParam("type") int when, HttpSession session) {
+        Long memberId = (Long) session.getAttribute("loginMember");
+        List<PillDto> pillDtoList = alarmService.findPills(when, memberId);
+        alarmService.takePill(when, pillDtoList);
+        return ResponseEntity.ok(true);
+    }
 
 
 }

@@ -5,9 +5,11 @@ import medal.backend.Dto.PillDto;
 import medal.backend.entity.Pill;
 import medal.backend.repository.PillRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PillService {
 
     private final PillRepository pillRepository;

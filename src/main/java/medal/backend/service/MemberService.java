@@ -11,6 +11,7 @@ import medal.backend.entity.Member;
 import medal.backend.repository.EnrollRepository;
 import medal.backend.repository.MemberRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalTime;
@@ -20,6 +21,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -82,25 +84,34 @@ public class MemberService {
 
         if (currentTime.isAfter(LocalTime.of(10, 0))) {
             log.info("아침 지남");
+            Boolean check = true;
             for(Enroll enroll : enrollList) {
                 if (enroll.getAlarm().getMorningAte() == false) {
+                    check = false;
                     manageInfoDto.setIsAteMorning(false);
                 }
             }
-        } else if (currentTime.isAfter(LocalTime.of(14, 0))) {
+            if(check) manageInfoDto.setIsAteMorning(true);
+        }
+        if (currentTime.isAfter(LocalTime.of(14, 0))) {
             log.info("점심 지남");
+            Boolean check = true;
             for(Enroll enroll : enrollList) {
                 if (enroll.getAlarm().getLaunchAte() == false) {
                     manageInfoDto.setIsAteLaunch(false);
                 }
             }
-        } else if (currentTime.isAfter(LocalTime.of(21, 0))) {
+            if(check) manageInfoDto.setIsAteLaunch(true);
+        }
+        if (currentTime.isAfter(LocalTime.of(21, 0))) {
             log.info("저녁 지남");
+            Boolean check = true;
             for(Enroll enroll : enrollList) {
                 if (enroll.getAlarm().getDinnerAte() == false) {
                     manageInfoDto.setIsAteDinner(false);
                 }
             }
+            if(check) manageInfoDto.setIsAteDinner(true);
         }
 
         return manageInfoDto;

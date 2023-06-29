@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class ManageInfoDto {
-    private Boolean isAteMorning = true;
-    private Boolean isAteLaunch = true;
-    private Boolean isAteDinner = true;
+    private Boolean isAteMorning = null;
+    private Boolean isAteLaunch = null;
+    private Boolean isAteDinner = null;
 }

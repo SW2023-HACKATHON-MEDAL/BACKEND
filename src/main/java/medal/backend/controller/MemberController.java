@@ -1,5 +1,6 @@
 package medal.backend.controller;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import medal.backend.Dto.JoinFormDto;
 import medal.backend.Dto.LoginFormDto;
@@ -25,6 +26,7 @@ public class MemberController {
     /**
      * 약 저장
      */
+    @ApiOperation(value = "약 저장")
     @PostMapping("/save")
     public Long savePill(PillDto pillDto) {
         Long savedId = pillService.savePill(pillDto);
@@ -34,6 +36,7 @@ public class MemberController {
     /**
      * 회원가입
      */
+    @ApiOperation(value = "회원가입")
     @PostMapping("/join")
     public ResponseEntity<?> saveMember(JoinFormDto joinFormDto) {
         Long memberId = memberService.saveMember(joinFormDto);
@@ -43,6 +46,7 @@ public class MemberController {
     /**
      * 로그인
      */
+    @ApiOperation(value = "로그인")
     @PostMapping("/login")
     public ResponseEntity<?> loginMember(LoginFormDto loginFormDto, HttpSession session) {
         Member member = memberService.loginMember(loginFormDto);
@@ -56,6 +60,7 @@ public class MemberController {
     /**
      * 관리하는 회원의 약 복용 상태
      */
+    @ApiOperation(value = "관리 회원의 약 복용 상태")
     @GetMapping("/manage-info")
     public ManageInfoDto manageInfo(HttpSession session) {
         Long memberId = (Long) session.getAttribute("loginMember");
