@@ -42,8 +42,7 @@ public class ApiController {
     @ApiOperation(value = "아침, 점심, 저녁 별 알약 정보", notes = "아침: type=0 <br> 점심: type=1 <br> 저녁: type=2")
     @PostMapping("/info-alarm")
     public List<PillDto> mainPage(@RequestBody TypeDto typeDto, HttpSession session) {
-        Long memberId = 1L;
-//        Long memberId = (Long) session.getAttribute("loginMember");
+        Long memberId = (Long) session.getAttribute("loginMember");
         System.out.println(typeDto.getType());
         List<PillDto> pillDtoList = alarmService.findPills(typeDto.getType(), memberId);
         return pillDtoList;
@@ -52,8 +51,7 @@ public class ApiController {
     @ApiOperation(value = "약 먹었는지 체크 요청", notes = "아침: type=0 <br> 점심: type=1 <br> 저녁: type=2")
     @PostMapping("/take-pill")
     public ResponseEntity<?> takePill(@RequestBody TypeDto typeDto, HttpSession session) {
-        Long memberId = 1L;
-//        Long memberId = (Long) session.getAttribute("loginMember");
+        Long memberId = (Long) session.getAttribute("loginMember");
         List<PillDto> pillDtoList = alarmService.findPills(typeDto.getType(), memberId);
         alarmService.takePill(typeDto.getType(), pillDtoList);
         return ResponseEntity.ok(true);
